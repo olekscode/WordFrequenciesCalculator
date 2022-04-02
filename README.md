@@ -28,3 +28,45 @@ spec
 ```
 
 ## How to use it
+
+### 1. Selecting a text corpus
+
+First, we need to select a text corpus on which we will be calculating the word frequencies.
+A corpus is just a file with very long text or combination of texts that is used to train language models.
+For example, the [Guttenberg Corpus](https://languagelog.ldc.upenn.edu/nll/?p=45629) contains full texts of hundreds of English books, [Brown Corpus](https://en.wikipedia.org/wiki/Brown_Corpus) contains different-purpose texts in English such as Press, Hobbies, Science, Religion, Fiction.
+[Leipzig WortSchatz](https://wortschatz.uni-leipzig.de/en/download) provides corpora in many different languages, including Wikipedia articles, news, and web corpora.
+
+By analysing a text corpus, we can learn about the language that is used in it.
+More specifically, with `WordFrequenciesCalculator`, we can calculate the word frequencies in a corpus, which will be representative of the word frequency of its language.
+
+We download a selected corpus into a `.txt` file and create a file reference in Pharo:
+```st
+corpusFile := '/Users/oleks/Documents/Data/brown.txt' asFileReference.
+```
+The contents of that file may look like this:
+
+> The Fulton County Grand Jury said Friday an investigation of Atlanta's recent primary election produced no evidence that any irregularities took place. The jury further said in term-end presentments that the City Executive Committee, which had over-all charge of the election, deserves the praise and thanks of the City of Atlanta for the manner in which the election was conducted. The September-October term jury had been charged by Fulton Superior Court Judge Durwood Pye to investigate reports of possible irregularities in the hard-fought primary which was won by Mayor-nominate Ivan Allen Jr. Only a relative handful of such reports was received, the jury said, considering the widespread interest in the election, the number of voters and the size of this city. The jury said it did find that many of Georgia's registration and election laws are outmoded or inadequate and often ambiguous ...
+
+### 2. Creating an instance on WordFrequenciesCalculator
+
+```st
+calculator := WordFrequenciesCalculator withAlphabet: Alphabet english.
+```
+
+### 3. Calculating word frequencies
+
+```st
+calculator calculateWordFrequenciesInCorpus: corpusFile.
+```
+
+### 4. Saving the frequencies table into a CSV file
+
+```st
+brownFrequenciesFile := '/Users/oleks/Documents/Data/brown-frequencies.csv' asFileReference.
+```
+```st
+calculator saveToCsv: brownFrequenciesFile.
+```
+```st
+calculator saveTop: 10000 toCsv: brownFrequenciesFile.
+```
