@@ -67,3 +67,13 @@ WordTokenizer >> splitIntoWords: aString [
 	
 	^ aString substrings: (CharacterSet separators, { $- })
 ]
+
+{ #category : #public }
+WordTokenizer >> tokenize: aString [ 
+	
+	| words |
+	words := self splitIntoWords: aString.
+	words := self cleanWords: words.
+	words := self filterWords: words.
+	^ words
+]

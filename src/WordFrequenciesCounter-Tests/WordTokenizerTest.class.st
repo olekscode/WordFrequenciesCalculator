@@ -64,6 +64,34 @@ WordTokenizerTest >> testSplitIntoWords [
 ]
 
 { #category : #tests }
+WordTokenizerTest >> testTokenize [
+
+	| text words expectedWords |
+	
+	text := 'Let''s make open-source doL32or ich heiße Benoît'.
+	expectedWords := #('let''s' 'make' 'open' 'source' 'dolor' 'ich' 'heiße' 'benoît').
+	
+	words := tokenizer tokenize: text.
+	self assert: words equals: expectedWords.
+]
+
+{ #category : #tests }
+WordTokenizerTest >> testTokenizeWithAlphabet [
+
+	| text words expectedWords |
+	
+	tokenizer alphabet: Alphabet french.
+	
+	text := 'Let''s make open-source doL32or ich heiße Benoît'.
+	
+	"heiße is removed because it contains ß, which is not a French letter"
+	expectedWords := #('let''s' 'make' 'open' 'source' 'dolor' 'ich' 'benoît').
+	
+	words := tokenizer tokenize: text.
+	self assert: words equals: expectedWords.
+]
+
+{ #category : #tests }
 WordTokenizerTest >> testWithAlphabet [
 
 	tokenizer := WordTokenizer withAlphabet: 'abc'.

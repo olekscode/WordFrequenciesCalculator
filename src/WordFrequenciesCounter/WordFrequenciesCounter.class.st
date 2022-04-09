@@ -11,11 +11,7 @@ Class {
 WordFrequenciesCounter >> calculateWordFrequencies: aString [
 	"Count word frequencies in a text and return the dictionary"
 	| words |
-
-	words := tokenizer splitIntoWords: aString.
-	words := tokenizer cleanWords: words.
-	words := tokenizer filterWords: words.
-		
+	words := tokenizer tokenize: aString.
 	^ words asBag valuesAndCounts.
 	
 ]
