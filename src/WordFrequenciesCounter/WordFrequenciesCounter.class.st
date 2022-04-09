@@ -16,6 +16,12 @@ WordFrequenciesCounter class >> withAlphabet: aString [
 ]
 
 { #category : #accessing }
+WordFrequenciesCounter >> alphabet [
+
+	^ alphabet
+]
+
+{ #category : #accessing }
 WordFrequenciesCounter >> alphabet: aString [
 	"Words that have at least one character outside this alphabet will be filtered out.
 	If alphabet is not specified, all words will be considered valid"

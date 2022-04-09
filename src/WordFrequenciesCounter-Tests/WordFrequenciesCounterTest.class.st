@@ -176,6 +176,13 @@ WordFrequenciesCounterTest >> testSplitIntoWords [
 ]
 
 { #category : #tests }
+WordFrequenciesCounterTest >> testWithAlphabet [
+
+	counter := WordFrequenciesCounter withAlphabet: 'abc'.
+	self assert: counter alphabet equals: 'abc'
+]
+
+{ #category : #tests }
 WordFrequenciesCounterTest >> testWordFrequenciesInFile [
 
 	| file frequencies expectedFrequencies |
