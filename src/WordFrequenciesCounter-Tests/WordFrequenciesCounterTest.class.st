@@ -7,21 +7,76 @@ Class {
 	#category : #'WordFrequenciesCounter-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-WordFrequenciesCounterTest >> fileWithText [
+{ #category : #'private - testing' }
+WordFrequenciesCounterTest >> areValuesSorted: anOrderedDictionary [
+	"Answer true if values of an OrderedDictionary are sorted in the descending order"
+	| values |
+	anOrderedDictionary size < 2 ifTrue: [ ^ true ].
+	
+	values := anOrderedDictionary values.
+	
+	2 to: values size do: [ :i |
+		(values at: i) > (values at: i - 1) ifTrue: [ ^ false ] ].
+	
+	^ true
+]
+
+{ #category : #'tests - fixture' }
+WordFrequenciesCounterTest >> exampleFileWithText [
 	"Create an in-memory file containing a dummy text that will be used for testing"
 	| text file |
 	
-	text := 'I am Sam,
-Sam I am!
-I don''t like green eggs and ham.'.
-
+	text := self exampleText.
 	file := FileSystem memory / 'file.txt'.
 	
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: text ].
 	
 	^ file
+]
+
+{ #category : #'tests - fixture' }
+WordFrequenciesCounterTest >> exampleFrequencies [
+	
+	^ { 
+		'i' -> 3 .
+		'am' -> 2 .
+		'sam' -> 2 .
+		'don''t' -> 1 .
+		'like' -> 1 .
+		'green' -> 1 .
+		'eggs' -> 1 .
+		'and' -> 1 .
+		'ham' -> 1
+	} asOrderedDictionary.
+]
+
+{ #category : #'tests - fixture' }
+WordFrequenciesCounterTest >> exampleFrequenciesFileContents [
+	
+	^ 'i,3
+am,2
+sam,2
+don''t,1
+like,1
+green,1
+eggs,1
+and,1
+ham,1'
+]
+
+{ #category : #'tests - fixture' }
+WordFrequenciesCounterTest >> exampleText [
+	
+	^ 'I am Sam,
+Sam I am!
+I don''t like green eggs and ham.'
+]
+
+{ #category : #'tests - fixture' }
+WordFrequenciesCounterTest >> exampleTop5FrequenciesFileContents [
+	
+	^ String cr join: (self exampleFrequenciesFileContents lines first: 5)
 ]
 
 { #category : #initialization }
@@ -34,19 +89,9 @@ WordFrequenciesCounterTest >> setUp [
 WordFrequenciesCounterTest >> testCalculateWordFrequencies [
 
 	| text frequencies expectedFrequencies |
-	text := 'I am Sam, Sam I am! I don''t like green eggs and ham.'.
 	
-	expectedFrequencies := { 
-		'i' -> 3 .
-		'am' -> 2 .
-		'sam' -> 2 .
-		'don''t' -> 1 .
-		'like' -> 1 .
-		'green' -> 1 .
-		'eggs' -> 1 .
-		'and' -> 1 .
-		'ham' -> 1
-	} asDictionary.
+	text := self exampleText.
+	expectedFrequencies := self exampleFrequencies asDictionary.
 	
 	frequencies := counter calculateWordFrequencies: text.
 	self assert: frequencies equals: expectedFrequencies.
@@ -91,6 +136,34 @@ WordFrequenciesCounterTest >> testFilterWordsWithAlphabet [
 ]
 
 { #category : #tests }
+WordFrequenciesCounterTest >> testSaveFrequenciesToCsv [
+
+	| frequencies file expectedContents |
+	
+	frequencies := self exampleFrequencies.
+	file := FileSystem memory / 'frequencies.csv'.
+	expectedContents := self exampleFrequenciesFileContents.
+	
+	counter saveFrequencies: frequencies toCsv: file.
+	
+	self assert: file contents trim equals: expectedContents.
+]
+
+{ #category : #tests }
+WordFrequenciesCounterTest >> testSaveTopFrequenciesToCsv [
+
+	| frequencies file expectedContents |
+	
+	frequencies := self exampleFrequencies.
+	file := FileSystem memory / 'frequencies.csv'.
+	expectedContents := self exampleTop5FrequenciesFileContents.
+	
+	counter saveTop: 5 frequencies: frequencies toCsv: file.
+	
+	self assert: file contents trim equals: expectedContents.
+]
+
+{ #category : #tests }
 WordFrequenciesCounterTest >> testSplitIntoWords [
 
 	| text words expectedWords |
@@ -107,50 +180,27 @@ WordFrequenciesCounterTest >> testWordFrequenciesInFile [
 
 	| file frequencies expectedFrequencies |
 	
-	file := self fileWithText.
-	
-	expectedFrequencies := { 
-		'i' -> 3 .
-		'am' -> 2 .
-		'sam' -> 2 .
-		'don''t' -> 1 .
-		'like' -> 1 .
-		'green' -> 1 .
-		'eggs' -> 1 .
-		'and' -> 1 .
-		'ham' -> 1
-	} asOrderedDictionary.
+	file := self exampleFileWithText.
+	expectedFrequencies := self exampleFrequencies.
 	
 	frequencies := counter wordFrequenciesInFile: file.
 	self assert: frequencies equals: expectedFrequencies.
 	
 	"Check the order"
-	2 to: frequencies size do: [ :i |
-		self assert: (frequencies values at: i) <= (frequencies values at: i - 1) ]
+	self assert: (self areValuesSorted: frequencies).
 ]
 
 { #category : #tests }
 WordFrequenciesCounterTest >> testWordFrequenciesInString [
 
 	| text frequencies expectedFrequencies |
-	text := 'I am Sam, Sam I am! I don''t like green eggs and ham.'.
 	
-	expectedFrequencies := { 
-		'i' -> 3 .
-		'am' -> 2 .
-		'sam' -> 2 .
-		'don''t' -> 1 .
-		'like' -> 1 .
-		'green' -> 1 .
-		'eggs' -> 1 .
-		'and' -> 1 .
-		'ham' -> 1
-	} asOrderedDictionary.
+	text := self exampleText.
+	expectedFrequencies := self exampleFrequencies.
 	
 	frequencies := counter wordFrequenciesInString: text.
 	self assert: frequencies equals: expectedFrequencies.
 	
 	"Check the order"
-	2 to: frequencies size do: [ :i |
-		self assert: (frequencies values at: i) <= (frequencies values at: i - 1) ]
+	self assert: (self areValuesSorted: frequencies).
 ]
