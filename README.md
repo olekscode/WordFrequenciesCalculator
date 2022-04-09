@@ -1,7 +1,7 @@
 # WordFrequenciesCounter
 
 [![Build status](https://github.com/olekscode/WordFrequenciesCounter/workflows/CI/badge.svg)](https://github.com/olekscode/WordFrequenciesCounter/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/olekscode/WordFrequenciesCounter/badge.svg?branch=master)](https://coveralls.io/github/olekscode/WordFrequenciesCounter?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/olekscode/WordFrequenciesCounter/badge.svg)](https://coveralls.io/github/olekscode/WordFrequenciesCounter?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/olekscode/WordFrequenciesCounter/master/LICENSE)
 
 Calculate word frequencies in text corpora
