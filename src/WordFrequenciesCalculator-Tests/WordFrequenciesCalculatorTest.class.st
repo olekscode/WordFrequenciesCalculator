@@ -10,7 +10,7 @@ Class {
 { #category : #initialization }
 WordFrequenciesCalculatorTest >> setUp [
 
-	frequenciesCalculator := WordFrequenciesCalculator new.
+	frequenciesCalculator := WordFrequenciesCounter new.
 ]
 
 { #category : #tests }
