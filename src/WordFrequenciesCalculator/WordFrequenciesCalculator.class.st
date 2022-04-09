@@ -31,12 +31,9 @@ WordFrequenciesCalculator >> calculateWordFrequenciesInCorpus: aFileReference [
 
 	aFileReference readStreamDo: [ :stream |
 		[ stream atEnd ] whileFalse: [ 
-			words := stream nextLine validLowercaseWords.
-			
-			"If alphabet is specified, select only those words that have valid characters"
-			alphabet ifNotNil: [ 
-				words := words select: [ :word | word
-					allSatisfy: [ :c | alphabet includes: c ] ] ].
+			words := stream nextLine substrings.
+			words := self cleanWords: words.
+			words := self filterWords: words.
 		
 			sentenceFrequencies := words asBag valuesAndCounts.
 			
@@ -45,6 +42,36 @@ WordFrequenciesCalculator >> calculateWordFrequenciesInCorpus: aFileReference [
 	
 	"Sort frequencies in descending order"
 	frequencies := (frequencies associations sorted: [ :a :b | a value > b value ]) asOrderedDictionary.
+]
+
+{ #category : #'word preprocessing' }
+WordFrequenciesCalculator >> cleanWords: aCollectionOfWords [
+	"Remove non-letter characters and convert to lowercase"
+	| words |
+	
+	"Remove all non-letter characters (e.g., punctuation)"
+	words := aCollectionOfWords collect: [ :word |
+		word select: [ :c | c isLetter ] ].
+		
+	"Convert each word to lowercase"
+	words := words collect: [ :word | word asLowercase ].
+	^ words
+]
+
+{ #category : #'word preprocessing' }
+WordFrequenciesCalculator >> filterWords: aCollectionOfWords [
+	"Remove empty words. If alphabet is specified, remove all words that have at least one character outside the alphabet. For example, in English texts, we want to remove all words that have French characters"
+	| words |
+	words := aCollectionOfWords select: [ :word | word isNotEmpty ].
+	
+	"If alphabet is specified, select only those words that have valid characters"
+	alphabet ifNotNil: [ 
+		words := words select: [ :word | word
+			allSatisfy: [ :c | alphabet includes: c ] ] ].
+	
+	^ words
+	
+	
 ]
 
 { #category : #accessing }
@@ -60,7 +87,7 @@ WordFrequenciesCalculator >> initialize [
 	frequencies := Dictionary new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'file in/out' }
 WordFrequenciesCalculator >> saveFrequencies: aDictionary toCsv: aFileReference [
 
 	aFileReference writeStreamDo: [ :stream |
@@ -72,13 +99,13 @@ WordFrequenciesCalculator >> saveFrequencies: aDictionary toCsv: aFileReference 
 				cr ] ].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'file in/out' }
 WordFrequenciesCalculator >> saveToCsv: aFileReference [
 
 	self saveFrequencies: frequencies toCsv: aFileReference
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'file in/out' }
 WordFrequenciesCalculator >> saveTop: aNumber toCsv: aFileReference [
 
 	| topWords topWordFrequencies |
