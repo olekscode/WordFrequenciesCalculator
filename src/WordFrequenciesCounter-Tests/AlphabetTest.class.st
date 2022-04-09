@@ -1,7 +1,7 @@
 Class {
 	#name : #AlphabetTest,
 	#superclass : #TestCase,
-	#category : #'WordFrequencies-Tests'
+	#category : #'WordFrequenciesCounter-Tests'
 }
 
 { #category : #tests }

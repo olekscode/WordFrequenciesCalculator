@@ -1,7 +1,7 @@
 Class {
 	#name : #Alphabet,
 	#superclass : #Object,
-	#category : #WordFrequencies
+	#category : #WordFrequenciesCounter
 }
 
 { #category : #'as yet unclassified' }

@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'alphabet'
 	],
-	#category : #WordFrequencies
+	#category : #WordFrequenciesCounter
 }
 
 { #category : #'as yet unclassified' }
