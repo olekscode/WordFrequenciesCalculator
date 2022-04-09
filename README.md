@@ -1,30 +1,30 @@
-# WordFrequenciesCalculator
+# WordFrequenciesCounter
 
-[![Build status](https://github.com/olekscode/WordFrequenciesCalculator/workflows/CI/badge.svg)](https://github.com/olekscode/WordFrequenciesCalculator/actions/workflows/test.yml)
-[![Coverage Status](https://coveralls.io/repos/github/olekscode/WordFrequenciesCalculator/badge.svg?branch=master)](https://coveralls.io/github/olekscode/WordFrequenciesCalculator?branch=master)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/olekscode/WordFrequenciesCalculator/master/LICENSE)
+[![Build status](https://github.com/olekscode/WordFrequenciesCounter/workflows/CI/badge.svg)](https://github.com/olekscode/WordFrequenciesCounter/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/olekscode/WordFrequenciesCounter/badge.svg?branch=master)](https://coveralls.io/github/olekscode/WordFrequenciesCounter?branch=master)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/olekscode/WordFrequenciesCounter/master/LICENSE)
 
 Calculate word frequencies in text corpora
 
 ## How to install it
 
-To install `WordFrequenciesCalculator`, go to the Playground (Ctrl+OW) in your [Pharo](https://pharo.org/) image and execute the following Metacello script (select it and press Do-it button or Ctrl+D):
+To install `WordFrequenciesCounter`, go to the Playground (Ctrl+OW) in your [Pharo](https://pharo.org/) image and execute the following Metacello script (select it and press Do-it button or Ctrl+D):
 
 ```Smalltalk
 Metacello new
-  baseline: 'WordFrequenciesCalculator';
-  repository: 'github://olekscode/WordFrequenciesCalculator/src';
+  baseline: 'WordFrequencies';
+  repository: 'github://olekscode/WordFrequenciesCounter/src';
   load.
 ```
 
 ## How to depend on it
 
-If you want to add a dependency on `WordFrequenciesCalculator` to your project, include the following lines into your baseline method:
+If you want to add a dependency on `WordFrequenciesCounter` to your project, include the following lines into your baseline method:
 
 ```Smalltalk
 spec
-  baseline: 'WordFrequenciesCalculator'
-  with: [ spec repository: 'github://olekscode/WordFrequenciesCalculator/src' ].
+  baseline: 'WordFrequencies'
+  with: [ spec repository: 'github://olekscode/WordFrequenciesCounter/src' ].
 ```
 
 ## How to use it
@@ -50,13 +50,13 @@ The contents of that file may look like this:
 ### 2. Creating an instance on WordFrequenciesCalculator
 
 ```st
-calculator := WordFrequenciesCalculator withAlphabet: Alphabet english.
+counter := WordFrequenciesCounter withAlphabet: Alphabet english.
 ```
 
 ### 3. Calculating word frequencies
 
 ```st
-calculator calculateWordFrequenciesInCorpus: corpusFile.
+frequencies := counter wordFrequenciesInFile: corpusFile.
 ```
 
 ### 4. Saving the frequencies table into a CSV file
@@ -65,8 +65,13 @@ calculator calculateWordFrequenciesInCorpus: corpusFile.
 brownFrequenciesFile := '/Users/oleks/Documents/Data/brown-frequencies.csv' asFileReference.
 ```
 ```st
-calculator saveToCsv: brownFrequenciesFile.
+counter
+    saveFrequencies: frequencies
+    toCsv: brownFrequenciesFile.
 ```
 ```st
-calculator saveTop: 10000 toCsv: brownFrequenciesFile.
+counter
+    saveTop: 10000
+    frequencies: frequencies
+    toCsv: brownFrequenciesFile.
 ```
