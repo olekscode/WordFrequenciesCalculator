@@ -1,14 +1,14 @@
 SmalltalkCISpec {
   #loading : [
     SCIMetacelloLoadSpec {
-      #baseline : 'WordFrequencies',
+      #baseline : 'WordFrequenciesCounter',
       #directory : 'src',
       #platforms : [ #pharo ]
     }
   ],
   #testing : {
     #coverage : {
-      #packages : [ 'WordFrequencies' ]
+      #packages : [ 'WordFrequenciesCounter' ]
     }
   }
 }
