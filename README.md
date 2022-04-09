@@ -12,7 +12,7 @@ To install `WordFrequenciesCounter`, go to the Playground (Ctrl+OW) in your [Pha
 
 ```Smalltalk
 Metacello new
-  baseline: 'WordFrequencies';
+  baseline: 'WordFrequenciesCounter';
   repository: 'github://olekscode/WordFrequenciesCounter/src';
   load.
 ```
@@ -23,7 +23,7 @@ If you want to add a dependency on `WordFrequenciesCounter` to your project, inc
 
 ```Smalltalk
 spec
-  baseline: 'WordFrequencies'
+  baseline: 'WordFrequenciesCounter'
   with: [ spec repository: 'github://olekscode/WordFrequenciesCounter/src' ].
 ```
 
