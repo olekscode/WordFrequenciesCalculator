@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'counter'
 	],
-	#category : #'WordFrequenciesCalculator-Tests'
+	#category : #'WordFrequencies-Tests'
 }
 
 { #category : #initialization }
